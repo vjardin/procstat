@@ -113,7 +113,6 @@ void printonex(char *name, num x) {  printf("%20s: %016llx\n", name, x);}
 void printunsigned(char *name, unsigned long long x) {  printf("%20s: %llu\n", name, x);}
 void printchar(char *name, char x) {  printf("%20s: %c\n", name, x);}
 void printstr(char *name, char *x) {  printf("%20s: %s\n", name, x);}
-void printtime(char *name, num x) {  printf("%20s: %f\n", name, (((double)x) / tickspersec));}
 
 static void
 printsched(const char *name, num x) {
@@ -125,6 +124,14 @@ printsched(const char *name, num x) {
     (x == SCHED_BATCH) ? "SCHED_BATCH" :
     (x == SCHED_IDLE)  ? "SCHED_IDLE"  :
     "SCHED_???" );
+}
+
+void printtime(const char *name, num x) {
+  time_t rt = x / tickspersec;
+  char buf[1024];
+
+  strftime(buf, sizeof(buf), "%k:%M:%S", gmtime(&rt));
+  printf("%20s: %lldd %s (%f)\n", name, (x / tickspersec) / (24 * 60*60), buf, ((double)x) / tickspersec);
 }
 
 int gettimesinceboot() {
