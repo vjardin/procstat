@@ -129,7 +129,7 @@ void printtimediff(char *name, num x) {
   char buf[1024];
 
   strftime(buf, sizeof(buf), "%m.%d %H:%M", localtime(&rt));
-  printf("%20s: %s (%u.%us)\n", name, buf, running / tickspersec, running % tickspersec);
+  printf("%20s: %s (%lu.%lus)\n", name, buf, running / tickspersec, running % tickspersec);
 }
 
 int main(int argc, char *argv[]) {
