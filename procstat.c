@@ -44,6 +44,8 @@
 #include <time.h>
 #include <linux/limits.h>
 #include <sys/times.h>
+#define __USE_GNU
+#include <sched.h>
 
 
 typedef long long int num;
@@ -111,6 +113,18 @@ void printunsigned(char *name, unsigned long long x) {  printf("%20s: %llu\n", n
 void printchar(char *name, char x) {  printf("%20s: %c\n", name, x);}
 void printstr(char *name, char *x) {  printf("%20s: %s\n", name, x);}
 void printtime(char *name, num x) {  printf("%20s: %f\n", name, (((double)x) / tickspersec));}
+
+static void
+printsched(const char *name, num x) {
+  printf("%20s: %s%s\n", name,
+      (x & SCHED_RESET_ON_FORK) ? "SCHED_RESET_ON_FORK+" : "",
+    (x == SCHED_OTHER) ? "SCHED_OTHER" :
+    (x == SCHED_FIFO)  ? "SCHED_FIFO"  :
+    (x == SCHED_RR)    ? "SCHED_RR"    :
+    (x == SCHED_BATCH) ? "SCHED_BATCH" :
+    (x == SCHED_IDLE)  ? "SCHED_IDLE"  :
+    "SCHED_???" );
+}
 
 int gettimesinceboot() {
   FILE *procuptime;
@@ -232,7 +246,7 @@ int main(int argc, char *argv[]) {
     printonex("exit_signal", exit_signal);
     printone("cpu", cpu);
     printone("rt_priority", rt_priority);
-    printone("policy", policy);
+    printsched("policy", policy);
   }
 
   return 0;
