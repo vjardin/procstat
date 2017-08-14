@@ -4,6 +4,7 @@
  * Build: gcc -o procstat procstat.c
  * Usage: procstat pid
  *        cat /proc/pid/stat | procstat
+ *        procstat $(pidof MYPROCESS)
  *
  * Homepage: http://www.brokestream.com/procstat.html
  * Version : 2009-03-05
